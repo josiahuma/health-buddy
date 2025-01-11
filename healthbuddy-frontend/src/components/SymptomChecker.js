@@ -1,0 +1,78 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import Tips from './Tips';
+import { useNavigate } from 'react-router-dom';
+import '../styles/SymptomChecker.css';
+
+function SymptomChecker() {
+  const [symptoms, setSymptoms] = useState('');
+  const [diagnosis, setDiagnosis] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setDiagnosis(null);
+
+    if (!symptoms.trim()) {
+      setError('Please enter symptoms.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const response = await axios.post('http://localhost:5000/api/symptoms/diagnosis', {
+        symptoms: symptoms.split(',').map((s) => s.trim())
+      });
+
+      setDiagnosis(response.data.diagnosis);
+    } catch (err) {
+      console.error('Error fetching diagnosis:', err);
+      setError(
+        err.response?.data?.error || 'Unable to fetch diagnosis. Please try again later.'
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleChatClick = () => {
+    navigate('/practitioners');
+  };
+
+  return (
+    <div className="landing-container">
+      <div className="landing-box">
+        <h1>AI-Powered Symptom Checker</h1>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Enter Symptoms (comma-separated):
+            <input
+              type="text"
+              value={symptoms}
+              onChange={(e) => setSymptoms(e.target.value)}
+              placeholder="e.g., fever, headache, fatigue"
+            />
+          </label>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Checking...' : 'Get Diagnosis'}
+          </button>
+        </form>
+        {error && <p className="error-message">{error}</p>}
+        {diagnosis && (
+          <div>
+            <h2>Diagnosis:</h2>
+            <p>{diagnosis}</p>
+            <Tips diagnosis={diagnosis} />
+            <br />
+            <button onClick={handleChatClick}>Chat with a Health Professional</button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default SymptomChecker;
