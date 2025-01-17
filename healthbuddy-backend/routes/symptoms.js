@@ -1,18 +1,17 @@
 const express = require('express');
 const axios = require('axios');
+const SymptomHistory = require('../models/SymptomHistory');
+const authMiddleware = require('../middleware/auth');
 const router = express.Router();
 const dotenv = require('dotenv');
-
 dotenv.config(); // Load environment variables from .env file
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-if (!OPENAI_API_KEY) {
-  console.error('Error: OPENAI_API_KEY is not set in the environment variables.');
-}
 
 // Route to handle symptoms diagnosis
-router.post('/diagnosis', async (req, res) => {
+router.post('/diagnosis', authMiddleware, async (req, res) => {
   const { symptoms } = req.body;
+  const userId = req.user?.id;
 
   if (!symptoms || symptoms.length === 0) {
     return res.status(400).json({ error: 'Symptoms are required.' });
@@ -24,37 +23,33 @@ router.post('/diagnosis', async (req, res) => {
       {
         model: 'gpt-4',
         messages: [
-          {
-            role: 'system',
-            content: "You are a virtual medical assistant. Provide a diagnosis or advice based on the user's symptoms. Include a disclaimer about consulting a healthcare professional."
-          },
-          {
-            role: 'user',
-            content: `The user reports the following symptoms: ${symptoms.join(', ')}. Provide a possible diagnosis.`
-          }
+          { role: 'system', content: "You are a virtual medical assistant. Provide a diagnosis or advice based on the user's symptoms. Include a disclaimer about consulting a healthcare professional." },
+          { role: 'user', content: `The symptoms are: ${symptoms.join(', ')}.` },
         ],
         max_tokens: 300,
-        temperature: 0.7
       },
-      {
-        headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-          'Content-Type': 'application/json'
-        }
-      }
+      { headers: { Authorization: `Bearer ${OPENAI_API_KEY}` } }
     );
 
     const diagnosis = response.data.choices[0]?.message?.content;
-    if (!diagnosis) {
-      throw new Error('No diagnosis returned from OpenAI.');
-    }
-
+    await SymptomHistory.create({ userId, symptoms, diagnosis });
     res.json({ diagnosis });
-  } catch (error) {
-    console.error('OpenAI API Error:', error.response?.data || error.message);
-    res.status(500).json({ error: 'Unable to process symptoms. Please try again later.' });
+  } catch (err) {
+    res.status(500).json({ error: 'Unable to process symptoms. Please try again.' });
   }
 });
+
+// Route to get symptom history
+router.get('/history', authMiddleware, async (req, res) => {
+  try {
+    const history = await SymptomHistory.find({ userId: req.user.id }).sort({ createdAt: -1 });
+    res.json(history);
+  } catch (err) {
+    res.status(500).json({ error: 'Unable to fetch history.' });
+  }
+});
+
+
 
 // Route to handle AI-generated health tips
 router.post('/tips', async (req, res) => {
@@ -101,5 +96,6 @@ router.post('/tips', async (req, res) => {
     res.status(500).json({ error: 'Unable to fetch tips. Please try again later.' });
   }
 });
+
 
 module.exports = router;

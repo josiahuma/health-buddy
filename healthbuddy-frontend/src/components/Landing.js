@@ -22,11 +22,11 @@ function Landing() {
           <button onClick={() => navigate('/symptom-checker')}>
             Symptom Checker
           </button>
+          <button onClick={() => navigate('/symptom-history')}>
+            Symptom History
+          </button>
           <button onClick={() => navigate('/practitioners')}>
           Chat with a Health Professional
-          </button>
-          <button onClick={() => navigate('/practitioner-profile')}>
-            Edit Practitioner Profile
           </button>
         </div>
         <p>Your health, your way. Let’s get started!</p>

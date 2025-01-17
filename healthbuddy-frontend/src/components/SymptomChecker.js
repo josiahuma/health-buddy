@@ -16,6 +16,12 @@ function SymptomChecker() {
     setError('');
     setDiagnosis(null);
 
+    const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+  if (!token) {
+    setError('Authentication required. Please log in.');
+    return;
+  }
+
     if (!symptoms.trim()) {
       setError('Please enter symptoms.');
       return;
@@ -23,9 +29,13 @@ function SymptomChecker() {
 
     setLoading(true);
     try {
-      const response = await axios.post('http://localhost:5000/api/symptoms/diagnosis', {
-        symptoms: symptoms.split(',').map((s) => s.trim())
-      });
+      const response = await axios.post(
+        'http://localhost:5000/api/symptoms/diagnosis',
+        { symptoms: symptoms.split(',').map((s) => s.trim()) },
+        {
+          headers: { Authorization: `Bearer ${token}` }, // Add Authorization header
+        }
+      );
 
       setDiagnosis(response.data.diagnosis);
     } catch (err) {

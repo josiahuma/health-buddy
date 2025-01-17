@@ -108,9 +108,4 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// Logout Route (Optional: Not usually handled server-side in JWT setups)
-router.post('/logout', (req, res) => {
-  res.json({ message: 'Logout endpoint hit. Handle token removal client-side.' });
-});
-
 module.exports = router;

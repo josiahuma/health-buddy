@@ -6,6 +6,7 @@ const authRoutes = require('./routes/auth');
 const symptomsRoutes = require('./routes/symptoms');
 const practitionerRoutes = require('./routes/practitioners');
 const userRoutes = require('./routes/users');
+
 require('dotenv').config();
 
 const app = express();

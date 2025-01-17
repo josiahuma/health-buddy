@@ -9,6 +9,7 @@ import PractitionerList from './components/PractitionerList';
 import PractitionerRegister from './components/PractitionerRegister';
 import UserProfileEdit from './components/UserProfileEdit';
 import PractitionerProfileEdit from './components/PractitionerProfileEdit';
+import SymptomHistory from './components/SymptomHistory';
 import './styles/App.css';
 import './styles/Navigation.css';
 
@@ -121,6 +122,12 @@ function App() {
             path="/practitioners"
             element={
               isAuthenticated ? <PractitionerList /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/symptom-history"
+            element={
+              isAuthenticated ? <SymptomHistory /> : <Navigate to="/login" />
             }
           />
         </Routes>
