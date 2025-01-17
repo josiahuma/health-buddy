@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom'; // Import the Link component
 import '../styles/PractitionerRegister.css'; // Assuming a CSS file for styling
 
 function PractitionerRegister() {
@@ -108,6 +109,11 @@ function PractitionerRegister() {
 
         {message && <p className="success-message">{message}</p>}
         {error && <p className="error-message">{error}</p>}
+        <div className="links">
+          <p>
+            Have an account? <Link to="/login">Login</Link>
+          </p>
+        </div>
       </div>
     </div>
   );

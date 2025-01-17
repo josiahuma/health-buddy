@@ -57,15 +57,14 @@ function SymptomChecker() {
       <div className="landing-box">
         <h1>AI-Powered Symptom Checker</h1>
         <form onSubmit={handleSubmit}>
-          <label>
-            Enter Symptoms (comma-separated):
+          <label>Enter Symptoms (comma-separated):</label>
             <input
               type="text"
               value={symptoms}
               onChange={(e) => setSymptoms(e.target.value)}
               placeholder="e.g., fever, headache, fatigue"
             />
-          </label>
+          <br />
           <button type="submit" disabled={loading}>
             {loading ? 'Checking...' : 'Get Diagnosis'}
           </button>
