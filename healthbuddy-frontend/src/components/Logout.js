@@ -19,7 +19,7 @@ function Login({ setIsAuthenticated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const response = await axios.post('https://lyfchat.onrender.com/api/auth/login', { email, password });
       localStorage.setItem('token', response.data.token); // Save token to localStorage
       setIsAuthenticated(true); // Update authentication state
       navigate('/'); // Redirect to landing page or desired route

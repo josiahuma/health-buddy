@@ -8,7 +8,7 @@ function PractitionerList() {
     // Fetch practitioners
     const fetchPractitioners = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/practitioners/list');
+        const response = await axios.get('https://lyfchat.onrender.com/api/practitioners/list');
         setPractitioners(response.data);
       } catch (error) {
         console.error('Error fetching practitioners:', error);
@@ -21,7 +21,7 @@ function PractitionerList() {
   const handlePayAndChat = async (practitioner) => {
     // Redirect to Paystack payment
     try {
-      const response = await axios.post('http://localhost:5000/api/payments/initiate', {
+      const response = await axios.post('https://lyfchat.onrender.com/api/payments/initiate', {
         practitionerId: practitioner._id,
         fee: practitioner.consultationFee,
       });

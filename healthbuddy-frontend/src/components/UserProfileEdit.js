@@ -28,7 +28,7 @@ function UserProfileEdit() {
       }
 
       try {
-        const response = await axios.get('http://localhost:5000/api/users/user-profile', {
+        const response = await axios.get('https://lyfchat.onrender.com/api/users/user-profile', {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -65,7 +65,7 @@ function UserProfileEdit() {
 
     try {
       const response = await axios.put(
-        'http://localhost:5000/api/users/user-profile',
+        'https://lyfchat.onrender.com/api/users/user-profile',
         {
           id: profile.id, // Include the user ID in the request
           name: profile.name,

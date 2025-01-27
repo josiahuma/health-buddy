@@ -35,7 +35,7 @@ function PractitionerProfileEdit() {
       }
     
       try {
-        const response = await axios.get('http://localhost:5000/api/practitioners/practitioner-profile', {
+        const response = await axios.get('https://lyfchat.onrender.com/api/practitioners/practitioner-profile', {
           headers: { Authorization: `Bearer ${token}` }, // Include the token
         });
     
@@ -73,7 +73,7 @@ function PractitionerProfileEdit() {
   
     try {
       const response = await axios.put(
-        'http://localhost:5000/api/practitioners/practitioner-profile',
+        'https://lyfchat.onrender.com/api/practitioners/practitioner-profile',
         {
           id: profile.id, // Include ID in the request body
           name: profile.name,

@@ -30,7 +30,7 @@ function SymptomChecker() {
     setLoading(true);
     try {
       const response = await axios.post(
-        'http://localhost:5000/api/symptoms/diagnosis',
+        'https://lyfchat.onrender.com/api/symptoms/diagnosis',
         { symptoms: symptoms.split(',').map((s) => s.trim()) },
         {
           headers: { Authorization: `Bearer ${token}` }, // Add Authorization header

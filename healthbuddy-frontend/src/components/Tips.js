@@ -10,7 +10,7 @@ function Tips({ diagnosis }) {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post('http://localhost:5000/api/symptoms/tips', { diagnosis });
+      const response = await axios.post('https://lyfchat.onrender.com/api/symptoms/tips', { diagnosis });
       setTips(response.data.tips);
     } catch (err) {
       setError('Unable to fetch tips. Please try again.');

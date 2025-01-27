@@ -17,7 +17,7 @@ function Login({ setIsAuthenticated }) {
     setLoading(true);
 
     try {
-      const endpoint = 'http://localhost:5000/api/auth/login'; // Use appropriate login API endpoint
+      const endpoint = 'https://lyfchat.onrender.com/api/auth/login'; // Use appropriate login API endpoint
       const response = await axios.post(endpoint, { email, password, role:role });
       console.log(role);
 

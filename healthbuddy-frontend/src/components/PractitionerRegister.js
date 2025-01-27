@@ -29,7 +29,7 @@ function PractitionerRegister() {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/practitioner-register', formData);
+      const response = await axios.post('https://lyfchat.onrender.com/api/auth/practitioner-register', formData);
       setMessage(response.data.message || 'Registration successful!');
       setTimeout(() => navigate('/login'), 2000); // Redirect to login after 2 seconds
     } catch (error) {
